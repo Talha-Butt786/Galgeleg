@@ -1,0 +1,42 @@
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:padding="5dp"
+tools:context=".EndActivity" >
+
+    <ImageView
+        android:id="@+id/win_lose"
+        android:layout_width="wrap_content"
+        android:layout_height="331dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/gameover" />
+
+    <Button
+        android:id="@+id/PrøveIgen"
+        android:layout_width="103dp"
+        android:layout_height="62dp"
+        android:layout_below="@+id/win_lose"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="166dp"
+        android:layout_marginEnd="157dp"
+        android:layout_marginRight="157dp"
+        android:background="#69F0AE"
+        android:text="Prøve igen" />
+
+    <TextView
+        android:id="@+id/finishMsg"
+        android:layout_width="271dp"
+        android:layout_height="37dp"
+        android:layout_below="@+id/win_lose"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="49dp"
+        android:layout_marginEnd="98dp"
+        android:layout_marginRight="98dp"
+        android:text="change"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+</RelativeLayout>
