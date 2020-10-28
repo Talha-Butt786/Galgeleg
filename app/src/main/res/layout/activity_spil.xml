@@ -8,6 +8,7 @@
     tools:context=".spil">
 
     <FrameLayout
+        android:id="@+id/frameLayout2"
         android:layout_width="413dp"
         android:layout_height="220dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,8 +25,9 @@
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="411dp"
-        android:layout_height="511dp"
+        android:id="@+id/frameLayout"
+        android:layout_width="410dp"
+        android:layout_height="418dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -93,5 +95,28 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
     </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="410dp"
+        android:layout_height="91dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.65">
+
+        <TextView
+            android:id="@+id/SkjultOrd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:lineSpacingExtra="14sp"
+            android:text="TextView"
+            android:textAllCaps="true"
+            android:textScaleX="2"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
