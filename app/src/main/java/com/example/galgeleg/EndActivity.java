@@ -39,7 +39,7 @@ public class EndActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if(v == prøveigen){
             this.finish();
-            Intent spil = new Intent(this,SpilActivity.class);
+            Intent spil = new Intent(this, SpilActivity.class);
             startActivity(spil);
         }
     }

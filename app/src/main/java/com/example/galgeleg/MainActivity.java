@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if(v == startbutton){
-            Intent spil = new Intent(this,spil.class);
+            Intent spil = new Intent(this, SpilActivity.class);
             startActivity(spil);
         }
     }

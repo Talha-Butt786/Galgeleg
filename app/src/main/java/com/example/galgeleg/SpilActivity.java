@@ -1,158 +1,190 @@
 package com.example.galgeleg;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import java.util.HashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class SpilActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageView forkert1;
-    TextView skjultord, sidsteord, gætord;
-    EditText indtastOrd;
-    Button okbutton;
-    boolean gamefinished;
+    GridLayout gridLayout;
+    Button home,help;
+    TextView skjultOrd;
     GalgelegLogik galgelegLogik;
+    ImageView wrongimage;
+    HashMap<Integer,String> danskOrd;
+    Executor backThread;
+    Handler uiThread;
 
     public SpilActivity(){
         galgelegLogik = new GalgelegLogik();
+        backThread = Executors.newSingleThreadExecutor();
+        uiThread = new Handler();
     }
-
-
-    public boolean isHaveWon() {
-       return galgelegLogik.erSpilletVundet();
-    }
-
-    public boolean isGamefinished() {
-        return gamefinished = galgelegLogik.erSpilletSlut();
-    }
-
-    int antalforket;
-    int ordlengde;
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play);
-        forkert1 = findViewById(R.id.listeelem_billede);
-        skjultord = findViewById(R.id.skjultOrd);
-        indtastOrd = findViewById(R.id.indtastOrdet);
-        indtastOrd.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        setContentView(R.layout.activity_spil);
+        skjultOrd = findViewById(R.id.SkjultOrd);
+        wrongimage = findViewById(R.id.wrongimage);
+        home = findViewById(R.id.hjem);
+        help = findViewById(R.id.help);
+        home.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+        help.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+        home.setOnClickListener(this);
+        help.setOnClickListener(this);
+        danskOrd = new HashMap<>();
+        danskOrd.put(123,"Æ");
+        danskOrd.put(124,"Ø");
+        danskOrd.put(125,"Å");
+        try {
+            this.getSupportActionBar().hide();
+        }catch (NullPointerException e){}
 
+
+        gridLayout = findViewById(R.id.grid);
+        gridLayout.setRowCount(3);
+        gridLayout.setColumnCount(10);
+        addButtons();
+        hentOnlineOrd();
+        galgelegLogik.logStatus();
+    }
+
+    public void addButtons(){
+        int alphaAscii = 97;
+        for (int i = 0; i < 29; i++) {
+            System.out.println("row nr: "+gridLayout.getRowCount());
+            Button button = new Button(this);
+            if(i<26){
+                button.setText(String.valueOf(Character.toChars(alphaAscii)));
+            }else {
+                button.setText(danskOrd.get(alphaAscii));
             }
+            button.setWidth(20);
+            button.setHeight(30);
+            button.setId(alphaAscii);
+            GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
+            layoutParams.height = 150;
+            layoutParams.width = 107;
+            button.setLayoutParams(layoutParams);
+            button.setOnClickListener(this);
+            //https://stackoverflow.com/questions/13842447/android-set-button-background-programmatically
+            button.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+            gridLayout.addView(button);
+            alphaAscii++;
+        }
+    }
 
+    public void changePicsAccordingly (int wrongs){
+
+        switch (wrongs){
+            case 1:
+                wrongimage.setImageResource(R.drawable.forkert1);
+                break;
+            case 2:
+                wrongimage.setImageResource(R.drawable.forkert2);
+                break;
+            case 3:
+                wrongimage.setImageResource(R.drawable.forkert3);
+                break;
+            case 4:
+                wrongimage.setImageResource(R.drawable.forkert4);
+                break;
+            case 5:
+                wrongimage.setImageResource(R.drawable.forkert5);
+                break;
+            case 6:
+                wrongimage.setImageResource(R.drawable.forkert6);
+                break;
+        }
+
+    }
+
+    public void hentOnlineOrd (){
+        backThread.execute(new Runnable() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void run() {
+                OnlineOrd onlineOrd = new OnlineOrd();
+                uiThread.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        skjultOrd.setText("Henter Ord fra nettet...");
+                    }
+                });
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+                try {
+                    onlineOrd.hentOrdFraDr(galgelegLogik.muligeOrd);
+                    uiThread.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            galgelegLogik.startNytSpil();
+                            skjultOrd.setText(galgelegLogik.getSynligtOrd());
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                    skjultOrd.setText("kunne ikke hente data prøve igen!");
+                }
             }
         });
-        okbutton = findViewById(R.id.ok_button);
-        gætord = findViewById(R.id.gætord);
-        sidsteord = findViewById(R.id.sidsteOrd);
-        skjultord.setText(galgelegLogik.getSynligtOrd());
-        okbutton.setOnClickListener(this);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void startWatch(){
 
     }
 
 
     @Override
     public void onClick(View v) {
-        if(isGamefinished()){
-            Intent spil = new Intent(this,SpilActivity.class);
-            startActivity(spil);
-        }
-        else
-            updatespil(v);
-    }
-
-    public void updatespil(View view) {
-        List<String> brugteBogstaver = new ArrayList<>();
-        brugteBogstaver=galgelegLogik.getBrugteBogstaver();
-            String ord = indtastOrd.getText().toString();
-            String brugtOrd = "Ord er allerede brugt!";
-        for (int i = 0; i < brugteBogstaver.size() ; i++) {
-            if(brugteBogstaver.get(i).equals(ord)){
-                sidsteord.setText(brugtOrd);
-                return;
+        if(v == home){
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+        } else {
+            int id = v.getId();
+            if (id >= 97 && id <= 122) {
+                String IndtastOrd = String.valueOf(Character.toChars(id));
+                galgelegLogik.gætBogstav(IndtastOrd);
+                if(galgelegLogik.erSidsteBogstavKorrekt()){
+                    String ord = galgelegLogik.getSynligtOrd();
+                    skjultOrd = findViewById(R.id.SkjultOrd);
+                    skjultOrd.setText(ord);
+                }else {
+                    int wrongs = galgelegLogik.getAntalForkerteBogstaver();
+                    changePicsAccordingly(wrongs);
+                }
+            } else if (id >= 123 && id <= 125) {  // gæt hvis der trykkes på danske bogstav
+                String IndtastOrd = danskOrd.get(id);
+                galgelegLogik.gætBogstav(IndtastOrd);
+                if(galgelegLogik.erSidsteBogstavKorrekt()){
+                    String ord = galgelegLogik.getSynligtOrd();
+                    skjultOrd = findViewById(R.id.SkjultOrd);
+                    skjultOrd.setText(ord);
+                }else {
+                    int wrongs = galgelegLogik.getAntalForkerteBogstaver();
+                    changePicsAccordingly(wrongs);
+                }
+            }
+            //https://stackoverflow.com/questions/13842447/android-set-button-background-programmatically
+            v.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryLight), PorterDuff.Mode.MULTIPLY);
+            v.setClickable(false);
+            if(galgelegLogik.erSpilletSlut()){
+                String rigtigOrd = galgelegLogik.getOrdet();
+                Intent End = new Intent(this, EndActivity.class);
+                End.putExtra("gamewon",galgelegLogik.erSpilletVundet());
+                End.putExtra("rigtig ord",rigtigOrd);
+                startActivity(End);
             }
         }
-            galgelegLogik.gætBogstav(ord);
-            String msg = "Tillykke du gættet rigtig";
-            String igen = "prøve igen";
-            if (galgelegLogik.erSidsteBogstavKorrekt()) {
-                sidsteord.setText(msg);
-            } else {
-                sidsteord.setText(igen);
-            }
-
-            skjultord.setText(galgelegLogik.getSynligtOrd());
-            antalforket = galgelegLogik.getAntalForkerteBogstaver();
-            System.out.println("num: " + antalforket);
-            changePicsAccordingly();
-            galgelegLogik.logStatus();
-
-        if(isGamefinished()) {
-            String rigtigOrd = galgelegLogik.getOrdet();
-            okbutton.setText("prøve igen");
-            indtastOrd.setEnabled(false);
-            Intent End = new Intent(this, EndActivity.class);
-            End.putExtra("gamewon",isHaveWon());
-            End.putExtra("rigtig ord",rigtigOrd);
-            startActivity(End);
-//            if(isHaveWon()){
-//                forkert1.setImageResource(R.drawable.won);
-//                gætord.setText("tillykke du gættet rigtig ord: ");
-//            }else {
-//                forkert1.setImageResource(R.drawable.gameover);
-//                gætord.setText("øv du tabt, den rigtig ord er: ");
-//                skjultord.setText(galgelegLogik.getOrdet());
-//            }
-//
-        }
     }
-
-    public void changePicsAccordingly (){
-
-        switch (antalforket){
-            case 1:
-                forkert1.setImageResource(R.drawable.forkert1);
-                break;
-            case 2:
-                forkert1.setImageResource(R.drawable.forkert2);
-                break;
-            case 3:
-                forkert1.setImageResource(R.drawable.forkert3);
-                break;
-            case 4:
-                forkert1.setImageResource(R.drawable.forkert4);
-                break;
-            case 5:
-                forkert1.setImageResource(R.drawable.forkert5);
-                break;
-            case 6:
-                forkert1.setImageResource(R.drawable.forkert6);
-                break;
-        }
-
-    }
-
-
 }
