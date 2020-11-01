@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +28,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     HashMap<Integer,String> danskOrd;
     Executor backThread;
     Handler uiThread;
+    Chronometer chronometer;
+    long time1,time2;
 
     public SpilActivity(){
         galgelegLogik = new GalgelegLogik();
@@ -38,6 +42,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_spil);
         skjultOrd = findViewById(R.id.SkjultOrd);
         wrongimage = findViewById(R.id.wrongimage);
+        chronometer = findViewById(R.id.tid);
         home = findViewById(R.id.hjem);
         help = findViewById(R.id.help);
         home.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
@@ -57,7 +62,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         gridLayout.setRowCount(3);
         gridLayout.setColumnCount(10);
         addButtons();
-        hentOnlineOrd();
+        hentOnlineOrd();  // henter og samtidlige initialisere spillet
         galgelegLogik.logStatus();
     }
 
@@ -130,6 +135,9 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
                             galgelegLogik.startNytSpil();
                             skjultOrd.setText(galgelegLogik.getSynligtOrd());
+                            time1=SystemClock.elapsedRealtime();
+                            chronometer.setBase(time1);
+                            chronometer.start();
                         }
                     });
                 }catch (Exception e){
@@ -141,7 +149,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void startWatch(){
-
+        chronometer.start();
     }
 
 
@@ -153,6 +161,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             int id = v.getId();
             if (id >= 97 && id <= 122) {
+                time2 = SystemClock.elapsedRealtime();
+                System.out.println("time: "+ (time2-chronometer.getBase())/1000);
                 String IndtastOrd = String.valueOf(Character.toChars(id));
                 galgelegLogik.gætBogstav(IndtastOrd);
                 if(galgelegLogik.erSidsteBogstavKorrekt()){
@@ -179,6 +189,10 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             v.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryLight), PorterDuff.Mode.MULTIPLY);
             v.setClickable(false);
             if(galgelegLogik.erSpilletSlut()){
+                chronometer.stop();
+                if(galgelegLogik.erSpilletVundet()){
+                    System.out.println(chronometer.getText());
+                }
                 String rigtigOrd = galgelegLogik.getOrdet();
                 Intent End = new Intent(this, EndActivity.class);
                 End.putExtra("gamewon",galgelegLogik.erSpilletVundet());
