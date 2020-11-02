@@ -15,6 +15,9 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -64,7 +67,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         gridLayout.setRowCount(3);
         gridLayout.setColumnCount(10);
         addButtons();
-        String highscore = Integer.toString(PrefManager.getHighestScore(getApplicationContext()));
+
+        String highscore = Integer.toString(PrefManager.getInstance().getHighestScore(getApplicationContext()));
         highestscore.setText(highscore);
         hentOnlineOrd();  // henter og samtidlige initialisere spillet
         galgelegLogik.logStatus();
@@ -210,24 +214,30 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             if(galgelegLogik.erSpilletSlut()){
                 if(galgelegLogik.erSpilletVundet()){
                     Intent intent = new Intent(this, EndActivity.class);
-                   java.util.Date date = new java.util.Date();
                    Long l = new Long(getTotalPoints());
                    int points = l.intValue();
-                   Score score = new Score(date.toString(),points);
-                   scorelist = PrefManager.getScoresfromPref(getApplicationContext());
+                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                    String date = df.format(new Date());
+                   Score score = new Score(date,points);
+                   scorelist = PrefManager.getInstance().getScoresfromPref(getApplicationContext());
+                   if(scorelist.getScoreslist().get(0).getPoints()==0){
+                       scorelist=new HighScoreList();
+                   }
                    scorelist.getScoreslist().add(score);
-                   PrefManager.saveScoreList(getApplicationContext(),scorelist);
+                   PrefManager.getInstance().saveScoreList(getApplicationContext(),scorelist);
                    if(points>Integer.parseInt(highestscore.getText().toString())){
-                       PrefManager.saveHighestScore(getApplicationContext(),points);
+                       PrefManager.getInstance().saveHighestScore(getApplicationContext(),points);
                        intent.putExtra("newhighscore",points);
                    }
                    startActivity(intent);
+                   finish();
                 }
                 else if(galgelegLogik.erSpilletTabt()){
-                    Intent End = new Intent(this, EndActivity.class);
+                    Intent End = new Intent(this, LoseActivity.class);
                     String rigtigOrd = galgelegLogik.getOrdet();
                     End.putExtra("rigtig ord",rigtigOrd);
                     startActivity(End);
+                    finish();
                 }
             }
         }

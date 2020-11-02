@@ -24,6 +24,9 @@ public class EndActivity extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end);
+        try {
+            this.getSupportActionBar().hide();
+        }catch (NullPointerException e){}
         highscore = findViewById(R.id.highscoreid1);
         newhighscore = findViewById(R.id.yournewid);
         prøveigen = findViewById(R.id.prøvid);
@@ -33,14 +36,15 @@ public class EndActivity extends AppCompatActivity implements View.OnClickListen
         home.setOnClickListener(this);
         home.getBackground().setColorFilter(getResources().getColor(R.color.colorgohome), PorterDuff.Mode.MULTIPLY);
 
-        //todo update highscore
-//        if(getIntent().getIntExtra("newhighscore",0)==0){
-//            highscore.setText("");
-//            newhighscore.setText("");
-//        }else{
-//            int newhighscore1 = getIntent().getIntExtra("newhighscore",0);
-//            highscore.setText(newhighscore1);
-//        }
+        
+        int nyhighscore = getIntent().getIntExtra("newhighscore",0);
+        if(nyhighscore==0){
+            highscore.setText(null);
+            newhighscore.setText("you won the game");
+        }else{
+           int newhighscore1 = getIntent().getIntExtra("newhighscore",0);
+            highscore.setText(String.valueOf(newhighscore1));
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -52,11 +56,13 @@ public class EndActivity extends AppCompatActivity implements View.OnClickListen
             this.finish();
             Intent spil = new Intent(this, SpilActivity.class);
             startActivity(spil);
+            finish();
         }
         if(v == home){
             this.finish();
             Intent spil = new Intent(this, MainActivity.class);
             startActivity(spil);
+            finish();
         }
     }
 

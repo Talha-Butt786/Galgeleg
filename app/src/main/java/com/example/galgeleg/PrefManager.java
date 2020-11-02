@@ -8,11 +8,22 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
-class PrefManager {
+public class PrefManager {
+
     public static final String LIST_SCORE = "sharedprefs";
     public static final String HIGHEST_SCORE = "highscore";
+    public static PrefManager prefManager;
+    private PrefManager() {};
 
-    public static void saveScoreList (Context context, HighScoreList highscores){
+
+    public static PrefManager getInstance(){
+        if(prefManager==null){
+            prefManager = new PrefManager();
+        }
+        return prefManager;
+    }
+
+    public void saveScoreList (Context context, HighScoreList highscores){
         Gson gson = new Gson();
         String jsonobj = gson.toJson(highscores);
 
@@ -23,7 +34,7 @@ class PrefManager {
         //editor.apply();
     }
 
-    public static HighScoreList getScoresfromPref (Context context){
+    public HighScoreList getScoresfromPref (Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String jsonobj = preferences.getString(LIST_SCORE,"{\"scores\":[{\"date\":\"nodate\",\"points\":0}]}");
 
@@ -31,17 +42,17 @@ class PrefManager {
          return gson.fromJson(jsonobj,HighScoreList.class);
     }
 
-    public static void clearData (Context context){
+    public void clearData (Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().remove(LIST_SCORE).apply();
         preferences.edit().remove(HIGHEST_SCORE).apply();
     }
 
-    public static void saveHighestScore (Context context, int highestscore){
+    public void saveHighestScore (Context context, int highestscore){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences.edit().putInt(HIGHEST_SCORE,highestscore).apply();
     }
-    public static int getHighestScore(Context context){
+    public int getHighestScore(Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.getInt(HIGHEST_SCORE,0);
     }

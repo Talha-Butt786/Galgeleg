@@ -17,6 +17,9 @@ public class LoseActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lose);
+        try {
+            this.getSupportActionBar().hide();
+        }catch (NullPointerException e){}
         gohome = findViewById(R.id.gohomeid);
         prøveigen = findViewById(R.id.prøveigen);
         gohome.getBackground().setColorFilter(getResources().getColor(R.color.colorgohome), PorterDuff.Mode.MULTIPLY);

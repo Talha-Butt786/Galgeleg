@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //PrefManager.clearData(getApplicationContext());
+        //PrefManager.getInstance().clearData(getApplicationContext());  //to clear the list and highscore
         setContentView(R.layout.activity_main);
         startbutton =findViewById(R.id.startbutton);
         startbutton.setOnClickListener(this);
