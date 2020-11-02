@@ -9,17 +9,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button startbutton;
+    Button startbutton, scoreliste;
     TextView getWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        //PrefManager.clearData(getApplicationContext());
+        setContentView(R.layout.activity_main);
         startbutton =findViewById(R.id.startbutton);
         startbutton.setOnClickListener(this);
-
+        scoreliste = findViewById(R.id.scoreliste);
+        scoreliste.setOnClickListener(this);
     }
 
     @Override
@@ -28,5 +30,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent spil = new Intent(this, SpilActivity.class);
             startActivity(spil);
         }
+        if(v == scoreliste){
+            Intent list = new Intent(this, ScoreListActivity.class);
+            startActivity(list);
+        }
+
     }
 }

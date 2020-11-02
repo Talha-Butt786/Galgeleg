@@ -74,4 +74,15 @@
         app:layout_constraintTop_toBottomOf="@+id/startbutton"
         app:layout_constraintVertical_bias="0.09" />
 
+    <Button
+        android:id="@+id/scoreliste"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Score liste"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indstilling" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

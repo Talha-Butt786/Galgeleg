@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 public class SpilActivity extends AppCompatActivity implements View.OnClickListener {
     GridLayout gridLayout;
     Button home,help;
-    TextView skjultOrd;
+    TextView skjultOrd, highestscore;
     GalgelegLogik galgelegLogik;
     ImageView wrongimage;
     HashMap<Integer,String> danskOrd;
@@ -30,7 +30,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     Handler uiThread;
     Chronometer chronometer;
     long time1,time2;
-
+    HighScoreList scorelist;
+    String text;
     public SpilActivity(){
         galgelegLogik = new GalgelegLogik();
         backThread = Executors.newSingleThreadExecutor();
@@ -41,6 +42,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spil);
         skjultOrd = findViewById(R.id.SkjultOrd);
+        highestscore = findViewById(R.id.highscoreid);
         wrongimage = findViewById(R.id.wrongimage);
         chronometer = findViewById(R.id.tid);
         home = findViewById(R.id.hjem);
@@ -62,6 +64,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         gridLayout.setRowCount(3);
         gridLayout.setColumnCount(10);
         addButtons();
+        String highscore = Integer.toString(PrefManager.getHighestScore(getApplicationContext()));
+        highestscore.setText(highscore);
         hentOnlineOrd();  // henter og samtidlige initialisere spillet
         galgelegLogik.logStatus();
     }
@@ -135,9 +139,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
                             galgelegLogik.startNytSpil();
                             skjultOrd.setText(galgelegLogik.getSynligtOrd());
-                            time1=SystemClock.elapsedRealtime();
-                            chronometer.setBase(time1);
-                            chronometer.start();
+                            startWatch();
+
                         }
                     });
                 }catch (Exception e){
@@ -149,8 +152,24 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void startWatch(){
+        time1=SystemClock.elapsedRealtime();
+        chronometer.setBase(time1);
         chronometer.start();
     }
+    public long getTotalPoints(){
+        int maxpoint = 30000;
+        int wordlength = galgelegLogik.getOrdet().length();
+        time2 = SystemClock.elapsedRealtime();
+        long timesec = (time2-chronometer.getBase())/1000;
+        long timepoints = maxpoint-(timesec*100);
+        long bonuspoints = wordlength*5;
+        long points = timepoints+bonuspoints;
+        chronometer.stop();
+        return points;
+    }
+
+
+
 
 
     @Override
@@ -189,9 +208,17 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             v.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryLight), PorterDuff.Mode.MULTIPLY);
             v.setClickable(false);
             if(galgelegLogik.erSpilletSlut()){
-                chronometer.stop();
                 if(galgelegLogik.erSpilletVundet()){
-                    System.out.println(chronometer.getText());
+                   java.util.Date date = new java.util.Date();
+                   Long l = new Long(getTotalPoints());
+                   int points = l.intValue();
+                   Score score = new Score(date.toString(),points);
+                   scorelist = PrefManager.getScoresfromPref(getApplicationContext());
+                   scorelist.getScoreslist().add(score);
+                   PrefManager.saveScoreList(getApplicationContext(),scorelist);
+                   if(points>Integer.parseInt(highestscore.getText().toString())){
+                       PrefManager.saveHighestScore(getApplicationContext(),points);
+                   }
                 }
                 String rigtigOrd = galgelegLogik.getOrdet();
                 Intent End = new Intent(this, EndActivity.class);
