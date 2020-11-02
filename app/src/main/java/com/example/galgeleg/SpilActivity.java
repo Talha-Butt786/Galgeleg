@@ -3,6 +3,7 @@ package com.example.galgeleg;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.galgeleg.Statelogic.GalgeSpilContext;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,7 +29,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     GridLayout gridLayout;
     Button home,help;
     TextView skjultOrd, highestscore;
-    GalgelegLogik galgelegLogik;
+    GalgeSpilContext galgelegLogik;
     ImageView wrongimage;
     HashMap<Integer,String> danskOrd;
     Executor backThread;
@@ -36,7 +39,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     HighScoreList scorelist;
     String text;
     public SpilActivity(){
-        galgelegLogik = new GalgelegLogik();
+        galgelegLogik = new GalgeSpilContext();
         backThread = Executors.newSingleThreadExecutor();
         uiThread = new Handler();
     }
@@ -137,11 +140,11 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                 });
 
                 try {
-                    onlineOrd.hentOrdFraDr(galgelegLogik.muligeOrd);
+                    onlineOrd.hentOrdFraRegneark("2",galgelegLogik.getMuligeOrd());
                     uiThread.post(new Runnable() {
                         @Override
                         public void run() {
-                            galgelegLogik.startNytSpil();
+                            galgelegLogik.startSpil();
                             skjultOrd.setText(galgelegLogik.getSynligtOrd());
                             startWatch();
 
@@ -188,7 +191,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                 System.out.println("time: "+ (time2-chronometer.getBase())/1000);
                 String IndtastOrd = String.valueOf(Character.toChars(id));
                 galgelegLogik.gætBogstav(IndtastOrd);
-                if(galgelegLogik.erSidsteBogstavKorrekt()){
+                if(galgelegLogik.isSidsteBogstavVarKorrekt()){
                     String ord = galgelegLogik.getSynligtOrd();
                     skjultOrd = findViewById(R.id.SkjultOrd);
                     skjultOrd.setText(ord);
@@ -199,7 +202,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             } else if (id >= 123 && id <= 125) {  // gæt hvis der trykkes på danske bogstav
                 String IndtastOrd = danskOrd.get(id);
                 galgelegLogik.gætBogstav(IndtastOrd);
-                if(galgelegLogik.erSidsteBogstavKorrekt()){
+                if(galgelegLogik.isSidsteBogstavVarKorrekt()){
                     String ord = galgelegLogik.getSynligtOrd();
                     skjultOrd = findViewById(R.id.SkjultOrd);
                     skjultOrd.setText(ord);
@@ -212,7 +215,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             v.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryLight), PorterDuff.Mode.MULTIPLY);
             v.setClickable(false);
             if(galgelegLogik.erSpilletSlut()){
-                if(galgelegLogik.erSpilletVundet()){
+                if(galgelegLogik.isSpilletErVundet()){
                     Intent intent = new Intent(this, EndActivity.class);
                    Long l = new Long(getTotalPoints());
                    int points = l.intValue();
@@ -232,7 +235,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                    startActivity(intent);
                    finish();
                 }
-                else if(galgelegLogik.erSpilletTabt()){
+                else if(galgelegLogik.isSpilletErTabt()){
                     Intent End = new Intent(this, LoseActivity.class);
                     String rigtigOrd = galgelegLogik.getOrdet();
                     End.putExtra("rigtig ord",rigtigOrd);
