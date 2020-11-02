@@ -42,7 +42,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spil);
         skjultOrd = findViewById(R.id.SkjultOrd);
-        highestscore = findViewById(R.id.highscoreid);
+        highestscore = findViewById(R.id.highscoreid1);
         wrongimage = findViewById(R.id.wrongimage);
         chronometer = findViewById(R.id.tid);
         home = findViewById(R.id.hjem);
@@ -209,6 +209,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             v.setClickable(false);
             if(galgelegLogik.erSpilletSlut()){
                 if(galgelegLogik.erSpilletVundet()){
+                    Intent intent = new Intent(this, EndActivity.class);
                    java.util.Date date = new java.util.Date();
                    Long l = new Long(getTotalPoints());
                    int points = l.intValue();
@@ -218,13 +219,16 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                    PrefManager.saveScoreList(getApplicationContext(),scorelist);
                    if(points>Integer.parseInt(highestscore.getText().toString())){
                        PrefManager.saveHighestScore(getApplicationContext(),points);
+                       intent.putExtra("newhighscore",points);
                    }
+                   startActivity(intent);
                 }
-                String rigtigOrd = galgelegLogik.getOrdet();
-                Intent End = new Intent(this, EndActivity.class);
-                End.putExtra("gamewon",galgelegLogik.erSpilletVundet());
-                End.putExtra("rigtig ord",rigtigOrd);
-                startActivity(End);
+                else if(galgelegLogik.erSpilletTabt()){
+                    Intent End = new Intent(this, EndActivity.class);
+                    String rigtigOrd = galgelegLogik.getOrdet();
+                    End.putExtra("rigtig ord",rigtigOrd);
+                    startActivity(End);
+                }
             }
         }
     }
