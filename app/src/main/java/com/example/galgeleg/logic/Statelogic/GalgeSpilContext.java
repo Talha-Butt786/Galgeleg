@@ -21,7 +21,7 @@ public class GalgeSpilContext {
 
 
     public GalgeSpilContext() {
-        this.state = new InitialState();
+        this.state = new StartState();
         gameOn = false;
     }
 

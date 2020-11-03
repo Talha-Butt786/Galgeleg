@@ -78,14 +78,14 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void addButtons(){
-        int alphaAscii = 97;
+        int alphaAscii = 97;  //tilføjes bogstaver med ascii.
         buttonList = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
             Button button = new Button(this);
             if(i<26){
                 button.setText(String.valueOf(Character.toChars(alphaAscii)));
             }else {
-                button.setText(danskOrd.get(alphaAscii));
+                button.setText(danskOrd.get(alphaAscii)); // hentes danske ord
             }
             button.setId(alphaAscii);
             LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,1);
@@ -98,7 +98,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         }
         buttonList.get(29).setVisibility(View.INVISIBLE);   //ikke skal vises tom button.
         LinearLayout linearLayout = findViewById(R.id.tast);
-        int column = 0;
+        int buttonIndex = 0;
         for (int i = 0; i < 5; i++) {
             LinearLayout row = new LinearLayout(this);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -107,8 +107,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
 
             row.setLayoutParams(layoutParams);
             for (int j = 0; j < 6; j++) {
-                row.addView(buttonList.get(column));
-                column++;
+                row.addView(buttonList.get(buttonIndex));
+                buttonIndex++;
             }
             linearLayout.addView(row);
         }
@@ -243,6 +243,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                        PrefManager.getInstance().saveHighestScore(getApplicationContext(),points);
                        intent.putExtra("newhighscore",points);
                    }
+                   intent.putExtra("totalpoints",points);
                    intent.putExtra("nrforsøg",galgelegLogik.getBrugteBogstaver().size());
                    startActivity(intent);
                    finish();

@@ -2,7 +2,7 @@ package com.example.galgeleg.logic.Statelogic;
 
 import java.util.Random;
 
-public class InitialState extends GalgelegStateAdapter{
+public class StartState extends GalgelegStateAdapter{
     @Override
     public void startSpil(GalgeSpilContext context) {
         context.getBrugteBogstaver().clear();

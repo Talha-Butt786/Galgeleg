@@ -41,10 +41,12 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
         
         int nyhighscore = getIntent().getIntExtra("newhighscore",0);
         int nrforsøg = getIntent().getIntExtra("nrforsøg",0);
+        int totalpoints = getIntent().getIntExtra("totalpoints",0);
         String strForsøg =  String.valueOf(nrforsøg);
+        String total = String.valueOf(totalpoints);
         antalforsøge.setText("Antal fosøg: "+strForsøg);
-        if(nyhighscore==0){
-            highscore.setText(null);
+        if(nyhighscore==0){  // hvis ikke var new high score
+            highscore.setText("you scored: " + total);
             newhighscore.setText("you won the game");
         }else{
            int newhighscore1 = getIntent().getIntExtra("newhighscore",0);

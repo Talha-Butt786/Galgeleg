@@ -14,7 +14,7 @@ public class PlayingState extends GalgelegStateAdapter {
 
             context.getBrugteBogstaver().add(bogstav);
 
-            if (context.getOrdet().contains(bogstav) || bogstav.equals("Æ")) {
+            if (context.getOrdet().contains(bogstav)) {
                 context.setSidsteBogstavVarKorrekt(true);
                 System.out.println("Bogstavet var korrekt: " + bogstav);
             } else {
