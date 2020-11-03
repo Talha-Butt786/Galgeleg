@@ -1,8 +1,5 @@
-package com.example.galgeleg;
+package com.example.galgeleg.State_logic;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Score {
     private String date;

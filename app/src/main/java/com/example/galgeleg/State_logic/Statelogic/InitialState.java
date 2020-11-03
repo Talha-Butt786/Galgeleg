@@ -1,4 +1,4 @@
-package com.example.galgeleg.Statelogic;
+package com.example.galgeleg.State_logic.Statelogic;
 
 import java.util.Random;
 
@@ -17,3 +17,4 @@ public class InitialState extends GalgelegStateAdapter{
         context.setState(new PlayingState());
     }
 }
+

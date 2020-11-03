@@ -5,6 +5,6 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:colorButtonNormal">#2196f3</item>
+        <item name="android:colorButtonNormal">@color/colorPrimary</item>
     </style>
 </resources>

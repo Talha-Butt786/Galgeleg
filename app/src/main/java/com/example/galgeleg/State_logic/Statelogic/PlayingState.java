@@ -1,6 +1,6 @@
-package com.example.galgeleg.Statelogic;
+package com.example.galgeleg.State_logic.Statelogic;
 
-import java.util.Scanner;
+
 
 public class PlayingState extends GalgelegStateAdapter {
 
@@ -14,7 +14,7 @@ public class PlayingState extends GalgelegStateAdapter {
 
             context.getBrugteBogstaver().add(bogstav);
 
-            if (context.getOrdet().contains(bogstav)) {
+            if (context.getOrdet().contains(bogstav) || bogstav.equals("Æ")) {
                 context.setSidsteBogstavVarKorrekt(true);
                 System.out.println("Bogstavet var korrekt: " + bogstav);
             } else {

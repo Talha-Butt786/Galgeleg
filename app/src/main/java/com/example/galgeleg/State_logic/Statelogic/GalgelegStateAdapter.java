@@ -1,4 +1,4 @@
-package com.example.galgeleg.Statelogic;
+package com.example.galgeleg.State_logic.Statelogic;
 
 public class GalgelegStateAdapter implements GalgelegState{
 

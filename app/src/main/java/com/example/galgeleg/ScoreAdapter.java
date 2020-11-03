@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.galgeleg.State_logic.HighScoreList;
+
+// Custom Adapter class to match the listview of my layout.
+//https://www.devglan.com/android/create-custom-adapter-in-list-view
 public class ScoreAdapter extends BaseAdapter {
     Context context;
     HighScoreList scoreList;
@@ -35,11 +39,11 @@ public class ScoreAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.activity_scorelist,parent,false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.layoutlist,parent,false);
         }
         TextView score = convertView.findViewById(R.id.scoreid);
-        TextView dato = convertView.findViewById(R.id.dato);
-        //if(position==0 && scoreList.getScoreslist().get(position+1)!=null) position = 1;
+        TextView dato = convertView.findViewById(R.id.datoid);
+
         score.setText(String.valueOf(scoreList.getScoreslist().get(position).getPoints()));
         dato.setText(String.valueOf(scoreList.getScoreslist().get(position).getDate()));
         return convertView;

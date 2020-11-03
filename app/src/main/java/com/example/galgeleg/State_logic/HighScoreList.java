@@ -1,4 +1,4 @@
-package com.example.galgeleg;
+package com.example.galgeleg.State_logic;
 
 import java.util.ArrayList;
 import java.util.List;

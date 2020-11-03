@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.example.galgeleg.State_logic.HighScoreList;
 import com.google.gson.Gson;
-
-import java.util.List;
 
 public class PrefManager {
 
-    public static final String LIST_SCORE = "sharedprefs";
-    public static final String HIGHEST_SCORE = "highscore";
+    public static final String LIST_SCORE = "sharedprefs";  //gemmes liste over alle scores
+    public static final String HIGHEST_SCORE = "highscore"; // gemmes high score
     public static PrefManager prefManager;
     private PrefManager() {};
 
@@ -28,10 +27,9 @@ public class PrefManager {
         String jsonobj = gson.toJson(highscores);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        //SharedPreferences.Editor editor = preferences.edit(); // to save the variable
-        //editor.putString(LIST_SCORE,jsonobj);
-        preferences.edit().putString(LIST_SCORE,jsonobj).apply();
-        //editor.apply();
+        SharedPreferences.Editor editor = preferences.edit(); // to save the variable
+        editor.putString(LIST_SCORE,jsonobj);
+        editor.apply();
     }
 
     public HighScoreList getScoresfromPref (Context context){

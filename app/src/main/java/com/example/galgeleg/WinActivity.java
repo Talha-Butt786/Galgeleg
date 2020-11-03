@@ -11,11 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-public class EndActivity extends AppCompatActivity implements View.OnClickListener {
+public class WinActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView winLose;
     Button prøveigen, home;
-    TextView highscore,newhighscore;
+    TextView highscore,newhighscore,antalforsøge;
 
 
 
@@ -23,7 +23,7 @@ public class EndActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_end);
+        setContentView(R.layout.activity_win);
         try {
             this.getSupportActionBar().hide();
         }catch (NullPointerException e){}
@@ -35,9 +35,14 @@ public class EndActivity extends AppCompatActivity implements View.OnClickListen
         home = findViewById(R.id.homeid);
         home.setOnClickListener(this);
         home.getBackground().setColorFilter(getResources().getColor(R.color.colorgohome), PorterDuff.Mode.MULTIPLY);
+        antalforsøge = findViewById(R.id.nrforsøge);
+
 
         
         int nyhighscore = getIntent().getIntExtra("newhighscore",0);
+        int nrforsøg = getIntent().getIntExtra("nrforsøg",0);
+        String strForsøg =  String.valueOf(nrforsøg);
+        antalforsøge.setText("Antal fosøg: "+strForsøg);
         if(nyhighscore==0){
             highscore.setText(null);
             newhighscore.setText("you won the game");

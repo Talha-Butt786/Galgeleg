@@ -12,26 +12,29 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.galgeleg.Statelogic.GalgeSpilContext;
-
+import com.example.galgeleg.State_logic.Statelogic.*;
+import com.example.galgeleg.State_logic.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class SpilActivity extends AppCompatActivity implements View.OnClickListener {
-    GridLayout gridLayout;
     Button home,help;
     TextView skjultOrd, highestscore;
     GalgeSpilContext galgelegLogik;
     ImageView wrongimage;
     HashMap<Integer,String> danskOrd;
+    List<Button> buttonList;
     Executor backThread;
     Handler uiThread;
     Chronometer chronometer;
@@ -58,47 +61,56 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         home.setOnClickListener(this);
         help.setOnClickListener(this);
         danskOrd = new HashMap<>();
-        danskOrd.put(123,"Æ");
-        danskOrd.put(124,"Ø");
-        danskOrd.put(125,"Å");
+        danskOrd.put(123,"æ");
+        danskOrd.put(124,"ø");
+        danskOrd.put(125,"å");
         try {
             this.getSupportActionBar().hide();
         }catch (NullPointerException e){}
 
-
-        gridLayout = findViewById(R.id.grid);
-        gridLayout.setRowCount(3);
-        gridLayout.setColumnCount(10);
         addButtons();
 
         String highscore = Integer.toString(PrefManager.getInstance().getHighestScore(getApplicationContext()));
         highestscore.setText(highscore);
-        hentOnlineOrd();  // henter og samtidlige initialisere spillet
+        hentOnlineOrd();  //initialisere spillet samtidlig hentes ord online
+        startWatch();
         galgelegLogik.logStatus();
     }
 
     public void addButtons(){
         int alphaAscii = 97;
-        for (int i = 0; i < 29; i++) {
-            System.out.println("row nr: "+gridLayout.getRowCount());
+        buttonList = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
             Button button = new Button(this);
             if(i<26){
                 button.setText(String.valueOf(Character.toChars(alphaAscii)));
             }else {
                 button.setText(danskOrd.get(alphaAscii));
             }
-            button.setWidth(20);
-            button.setHeight(30);
             button.setId(alphaAscii);
-            GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
-            layoutParams.height = 150;
-            layoutParams.width = 107;
-            button.setLayoutParams(layoutParams);
+            LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,1);
+            button.setLayoutParams(LayoutParams);
             button.setOnClickListener(this);
             //https://stackoverflow.com/questions/13842447/android-set-button-background-programmatically
             button.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
-            gridLayout.addView(button);
+            buttonList.add(button);
             alphaAscii++;
+        }
+        buttonList.get(29).setVisibility(View.INVISIBLE);   //ikke skal vises tom button.
+        LinearLayout linearLayout = findViewById(R.id.tast);
+        int column = 0;
+        for (int i = 0; i < 5; i++) {
+            LinearLayout row = new LinearLayout(this);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            row.setLayoutParams(layoutParams);
+            for (int j = 0; j < 6; j++) {
+                row.addView(buttonList.get(column));
+                column++;
+            }
+            linearLayout.addView(row);
         }
     }
 
@@ -131,7 +143,6 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         backThread.execute(new Runnable() {
             @Override
             public void run() {
-                OnlineOrd onlineOrd = new OnlineOrd();
                 uiThread.post(new Runnable() {
                     @Override
                     public void run() {
@@ -140,7 +151,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                 });
 
                 try {
-                    onlineOrd.hentOrdFraRegneark("2",galgelegLogik.getMuligeOrd());
+                    galgelegLogik.hentOrdFraRegneark("2",galgelegLogik.getMuligeOrd());
                     uiThread.post(new Runnable() {
                         @Override
                         public void run() {
@@ -164,8 +175,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         chronometer.start();
     }
     public long getTotalPoints(){
-        int maxpoint = 30000;
-        int wordlength = galgelegLogik.getOrdet().length();
+        int maxpoint = 30000;  // max tid points en kan nå at have udover bonus.
+        int wordlength = galgelegLogik.getOrdet().length();  //jo større er længde jo mere bonus fås-
         time2 = SystemClock.elapsedRealtime();
         long timesec = (time2-chronometer.getBase())/1000;
         long timepoints = maxpoint-(timesec*100);
@@ -216,7 +227,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             v.setClickable(false);
             if(galgelegLogik.erSpilletSlut()){
                 if(galgelegLogik.isSpilletErVundet()){
-                    Intent intent = new Intent(this, EndActivity.class);
+                    Intent intent = new Intent(this, WinActivity.class);
                    Long l = new Long(getTotalPoints());
                    int points = l.intValue();
                     DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -232,6 +243,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                        PrefManager.getInstance().saveHighestScore(getApplicationContext(),points);
                        intent.putExtra("newhighscore",points);
                    }
+                   intent.putExtra("nrforsøg",galgelegLogik.getBrugteBogstaver().size());
                    startActivity(intent);
                    finish();
                 }
@@ -243,6 +255,9 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                     finish();
                 }
             }
+        }
+        if(v==help){
+            Toast.makeText(this,"Not implemented",Toast.LENGTH_SHORT).show();
         }
     }
 }
