@@ -1,4 +1,4 @@
-package com.example.galgeleg.State_logic;
+package com.example.galgeleg.logic;
 
 
 public class Score {

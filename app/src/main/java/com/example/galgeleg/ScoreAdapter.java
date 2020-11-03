@@ -7,15 +7,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.galgeleg.State_logic.HighScoreList;
+import com.example.galgeleg.logic.ScoreList;
 
 // Custom Adapter class to match the listview of my layout.
 //https://www.devglan.com/android/create-custom-adapter-in-list-view
 public class ScoreAdapter extends BaseAdapter {
     Context context;
-    HighScoreList scoreList;
+    ScoreList scoreList;
 
-    public ScoreAdapter(Context context, HighScoreList scoreList) {
+    public ScoreAdapter(Context context, ScoreList scoreList) {
         this.context = context;
         this.scoreList = scoreList;
     }

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.galgeleg.State_logic.HighScoreList;
+import com.example.galgeleg.logic.ScoreList;
 
 public class ScoreListActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,7 +22,7 @@ public class ScoreListActivity extends AppCompatActivity implements View.OnClick
         home = findViewById(R.id.homeidd);
         home.setOnClickListener(this);
         PrefManager prefManager = PrefManager.getInstance();
-        HighScoreList score = prefManager.getScoresfromPref(this);
+        ScoreList score = prefManager.getScoresfromPref(this);
         listView = findViewById(R.id.listview);
         ScoreAdapter scoreAdapter = new ScoreAdapter(this,score);
         listView.setAdapter(scoreAdapter);

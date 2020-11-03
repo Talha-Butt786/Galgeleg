@@ -17,8 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.galgeleg.State_logic.Statelogic.*;
-import com.example.galgeleg.State_logic.*;
+import com.example.galgeleg.logic.Statelogic.*;
+import com.example.galgeleg.logic.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     Handler uiThread;
     Chronometer chronometer;
     long time1,time2;
-    HighScoreList scorelist;
+    ScoreList scorelist;
     String text;
     public SpilActivity(){
         galgelegLogik = new GalgeSpilContext();
@@ -235,7 +235,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                    Score score = new Score(date,points);
                    scorelist = PrefManager.getInstance().getScoresfromPref(getApplicationContext());
                    if(scorelist.getScoreslist().get(0).getPoints()==0){
-                       scorelist=new HighScoreList();
+                       scorelist=new ScoreList();
                    }
                    scorelist.getScoreslist().add(score);
                    PrefManager.getInstance().saveScoreList(getApplicationContext(),scorelist);

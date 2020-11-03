@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.example.galgeleg.State_logic.HighScoreList;
+import com.example.galgeleg.logic.ScoreList;
 import com.google.gson.Gson;
 
 public class PrefManager {
@@ -22,7 +22,7 @@ public class PrefManager {
         return prefManager;
     }
 
-    public void saveScoreList (Context context, HighScoreList highscores){
+    public void saveScoreList (Context context, ScoreList highscores){
         Gson gson = new Gson();
         String jsonobj = gson.toJson(highscores);
 
@@ -32,12 +32,12 @@ public class PrefManager {
         editor.apply();
     }
 
-    public HighScoreList getScoresfromPref (Context context){
+    public ScoreList getScoresfromPref (Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String jsonobj = preferences.getString(LIST_SCORE,"{\"scores\":[{\"date\":\"nodate\",\"points\":0}]}");
 
          Gson gson = new Gson();
-         return gson.fromJson(jsonobj,HighScoreList.class);
+         return gson.fromJson(jsonobj, ScoreList.class);
     }
 
     public void clearData (Context context){
