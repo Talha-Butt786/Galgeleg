@@ -68,11 +68,11 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             this.getSupportActionBar().hide();
         }catch (NullPointerException e){}
 
-        addButtons();
 
         String highscore = Integer.toString(PrefManager.getInstance().getHighestScore(getApplicationContext()));
         highestscore.setText(highscore);
         hentOnlineOrd();  //initialisere spillet samtidlig hentes ord online
+        addButtons();
         startWatch();
         galgelegLogik.logStatus();
     }
