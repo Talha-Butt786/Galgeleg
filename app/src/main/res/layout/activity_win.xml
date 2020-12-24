@@ -7,6 +7,21 @@ android:layout_height="fill_parent"
 android:padding="5dp"
 tools:context=".WinActivity" >
 
+    <FrameLayout
+        android:id="@+id/confeti_Frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <nl.dionsegijn.konfetti.KonfettiView
+            android:id="@+id/viewKonfetti"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="0dp"

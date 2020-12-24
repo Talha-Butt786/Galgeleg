@@ -3,12 +3,22 @@ package com.example.galgeleg;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.github.jinatonic.confetti.CommonConfetti;
+import com.github.jinatonic.confetti.ConfettiView;
+
+import nl.dionsegijn.konfetti.KonfettiView;
+import nl.dionsegijn.konfetti.models.Shape;
+import nl.dionsegijn.konfetti.models.Size;
 
 
 public class WinActivity extends AppCompatActivity implements View.OnClickListener {
@@ -16,7 +26,7 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
     ImageView winLose;
     Button prøveigen, home;
     TextView highscore,newhighscore,antalforsøge;
-
+    FrameLayout frameLayout;
 
 
 
@@ -24,9 +34,25 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_win);
+
+
         try {
             this.getSupportActionBar().hide();
         }catch (NullPointerException e){}
+        frameLayout = findViewById(R.id.confeti_Frame);
+       // CommonConfetti.rainingConfetti(konfettiView,new int[]{Color.GREEN,Color.YELLOW,Color.BLUE}).infinite();
+        final KonfettiView konfettiView = findViewById(R.id.viewKonfetti);
+        konfettiView.build()
+                        .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
+                        .setDirection(0.0, 359.0)
+                        .setSpeed(1f, 5f)
+                        .setFadeOutEnabled(true)
+                        .setTimeToLive(2000L)
+                        .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                        .addSizes(new Size(12, 5f))
+                        .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
+                        .streamFor(300, 5000L);
+
         highscore = findViewById(R.id.highscoreid1);
         newhighscore = findViewById(R.id.yournewid);
         prøveigen = findViewById(R.id.prøvid);

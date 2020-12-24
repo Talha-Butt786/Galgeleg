@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jinatonic.confetti.CommonConfetti;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     Button startbutton, scoreliste,help;
     TextView getWord;
@@ -18,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        //PrefManager.getInstance().clearData(this);
         setContentView(R.layout.activity_main);
         startbutton =findViewById(R.id.startbutton);
         startbutton.getBackground().setColorFilter(getResources().getColor(R.color.colorstartbutton), PorterDuff.Mode.MULTIPLY);

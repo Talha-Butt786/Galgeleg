@@ -228,8 +228,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             if(galgelegLogik.erSpilletSlut()){
                 if(galgelegLogik.isSpilletErVundet()){
                     Intent intent = new Intent(this, WinActivity.class);
-                   Long l = new Long(getTotalPoints());
-                   int points = l.intValue();
+                    Long l = new Long(getTotalPoints());
+                    int points = l.intValue();
                     DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                     String date = df.format(new Date());
                    Score score = new Score(date,points);
