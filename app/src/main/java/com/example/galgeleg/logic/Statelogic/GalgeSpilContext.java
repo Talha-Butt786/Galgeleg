@@ -39,15 +39,14 @@ public class GalgeSpilContext {
         }
     }
 
-    public void hentOrdFraRegneark(String sværhedsgrader, List<String> muligeOrd) throws Exception {
+    public ArrayList<String> hentOrdFraRegneark(String sværhedsgrader) throws Exception {
+        ArrayList<String> muligeOrd = new ArrayList<>();
         String id = "1RnwU9KATJB94Rhr7nurvjxfg09wAHMZPYB3uySBPO6M";
-
         System.out.println("Henter data som kommasepareret CSV fra regnearket https://docs.google.com/spreadsheets/d/"+id+"/edit?usp=sharing");
 
         String data = hentUrl("https://docs.google.com/spreadsheets/d/" + id + "/export?format=csv&id=" + id);
         int linjeNr = 0;
-
-        muligeOrd.clear();
+            muligeOrd.clear();
         for (String linje : data.split("\n")) {
             if (linjeNr<20) System.out.println("Læst linje = " + linje); // udskriv de første 20 linjer
             if (linjeNr++ < 1 ) continue; // Spring første linje med kolonnenavnene over
@@ -59,8 +58,8 @@ public class GalgeSpilContext {
             System.out.println("Tilføjer "+ordet+", der har sværhedsgrad "+sværhedsgrad);
             muligeOrd.add(ordet);
         }
-
         System.out.println("muligeOrd = " + muligeOrd);
+        return muligeOrd;
     }
     public static String hentUrl(String url) throws IOException {
         System.out.println("Henter data fra " + url);

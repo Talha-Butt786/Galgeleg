@@ -5,16 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.github.jinatonic.confetti.CommonConfetti;
-import com.github.jinatonic.confetti.ConfettiView;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -39,7 +36,7 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
         try {
             this.getSupportActionBar().hide();
         }catch (NullPointerException e){}
-        frameLayout = findViewById(R.id.confeti_Frame);
+        frameLayout = findViewById(R.id.lottie_Frame);
        // CommonConfetti.rainingConfetti(konfettiView,new int[]{Color.GREEN,Color.YELLOW,Color.BLUE}).infinite();
         final KonfettiView konfettiView = findViewById(R.id.viewKonfetti);
         konfettiView.build()
@@ -53,6 +50,8 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
                         .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
                         .streamFor(300, 5000L);
 
+        final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.victory);
+        mediaPlayer.start();
         highscore = findViewById(R.id.highscoreid1);
         newhighscore = findViewById(R.id.yournewid);
         prøveigen = findViewById(R.id.prøvid);

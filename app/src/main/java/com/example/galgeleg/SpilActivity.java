@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.galgeleg.logic.Statelogic.*;
 import com.example.galgeleg.logic.*;
 import java.text.DateFormat;
@@ -43,8 +45,9 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     String text;
     public SpilActivity(){
         galgelegLogik = new GalgeSpilContext();
-        backThread = Executors.newSingleThreadExecutor();
-        uiThread = new Handler();
+
+//        backThread = Executors.newSingleThreadExecutor();
+//        uiThread = new Handler();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +74,13 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
 
         String highscore = Integer.toString(PrefManager.getInstance().getHighestScore(getApplicationContext()));
         highestscore.setText(highscore);
-        hentOnlineOrd();  //initialisere spillet samtidlig hentes ord online
-        addButtons();
+        //hentOnlineOrd();  //initialisere spillet samtidlig hentes ord online
+        galgelegLogik.setMuligeOrd(getIntent().getStringArrayListExtra("ord_list"));
+        galgelegLogik.startSpil();
+        skjultOrd.setText(galgelegLogik.getSynligtOrd());
         startWatch();
+        addButtons();
+        //startWatch();
         galgelegLogik.logStatus();
     }
 
@@ -88,11 +95,12 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                 button.setText(danskOrd.get(alphaAscii)); // hentes danske ord
             }
             button.setId(alphaAscii);
-            LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,1);
+            LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,2);
             button.setLayoutParams(LayoutParams);
             button.setOnClickListener(this);
             //https://stackoverflow.com/questions/13842447/android-set-button-background-programmatically
-            button.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
+            button.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+            button.setTextColor(Color.WHITE);
             buttonList.add(button);
             alphaAscii++;
         }
@@ -102,8 +110,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < 5; i++) {
             LinearLayout row = new LinearLayout(this);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
 
             row.setLayoutParams(layoutParams);
             for (int j = 0; j < 6; j++) {
@@ -151,10 +159,11 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                 });
 
                 try {
-                    galgelegLogik.hentOrdFraRegneark("2",galgelegLogik.getMuligeOrd());
+                   // galgelegLogik.hentOrdFraRegneark("2",galgelegLogik.getMuligeOrd());
                     uiThread.post(new Runnable() {
                         @Override
                         public void run() {
+
                             galgelegLogik.startSpil();
                             skjultOrd.setText(galgelegLogik.getSynligtOrd());
                             startWatch();
