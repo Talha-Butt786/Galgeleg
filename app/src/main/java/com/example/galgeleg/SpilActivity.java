@@ -42,12 +42,9 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     Chronometer chronometer;
     long time1,time2;
     ScoreList scorelist;
-    String text;
+    boolean multiplayer = false;
     public SpilActivity(){
         galgelegLogik = new GalgeSpilContext();
-
-//        backThread = Executors.newSingleThreadExecutor();
-//        uiThread = new Handler();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +73,10 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         highestscore.setText(highscore);
         //hentOnlineOrd();  //initialisere spillet samtidlig hentes ord online
         galgelegLogik.setMuligeOrd(getIntent().getStringArrayListExtra("ord_list"));
+        if(getIntent().getStringExtra("given_word")!=null){
+            multiplayer = true;
+            galgelegLogik.setGivenWord(getIntent().getStringExtra("given_word"));
+        }
         galgelegLogik.startSpil();
         skjultOrd.setText(galgelegLogik.getSynligtOrd());
         startWatch();
@@ -254,6 +255,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                    }
                    intent.putExtra("totalpoints",points);
                    intent.putExtra("nrforsøg",galgelegLogik.getBrugteBogstaver().size());
+                   intent.putExtra("multiplayer",multiplayer);
                    startActivity(intent);
                    finish();
                 }

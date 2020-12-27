@@ -14,6 +14,7 @@ public class GalgeSpilContext {
     private boolean spilletErVundet;
     private boolean spilletErTabt;
     private String synligtOrd;
+    private String givenWord;
     private int antalForkerteBogstaver;
     private boolean sidsteBogstavVarKorrekt;
     private ArrayList<String> muligeOrd = new ArrayList<String>();
@@ -176,5 +177,12 @@ public class GalgeSpilContext {
 
     public void setSidsteBogstavVarKorrekt(boolean sidsteBogstavVarKorrekt) {
         this.sidsteBogstavVarKorrekt = sidsteBogstavVarKorrekt;
+    }
+    public String getGivenWord() {
+        return givenWord;
+    }
+
+    public void setGivenWord(String givenWord) {
+        this.givenWord = givenWord;
     }
 }

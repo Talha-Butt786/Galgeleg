@@ -24,6 +24,7 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
     Button prøveigen, home;
     TextView highscore,newhighscore,antalforsøge;
     FrameLayout frameLayout;
+    boolean multiplayer = false;
 
 
 
@@ -36,19 +37,21 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
         try {
             this.getSupportActionBar().hide();
         }catch (NullPointerException e){}
+
+        multiplayer = getIntent().getBooleanExtra("multiplayer",false);
         frameLayout = findViewById(R.id.lottie_Frame);
        // CommonConfetti.rainingConfetti(konfettiView,new int[]{Color.GREEN,Color.YELLOW,Color.BLUE}).infinite();
         final KonfettiView konfettiView = findViewById(R.id.viewKonfetti);
         konfettiView.build()
-                        .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
-                        .setDirection(0.0, 359.0)
-                        .setSpeed(1f, 5f)
-                        .setFadeOutEnabled(true)
-                        .setTimeToLive(2000L)
-                        .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
-                        .addSizes(new Size(12, 5f))
-                        .setPosition(-50f, konfettiView.getWidth() + 50f, -50f, -50f)
-                        .streamFor(300, 5000L);
+                .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA,Color.BLUE)
+                .setDirection(0.0, 359.0)
+                .setSpeed(1f, 5f)
+                .setFadeOutEnabled(true)
+                .setTimeToLive(2000L)
+                .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
+                .addSizes(new Size(12, 5f))
+                .setPosition(-50f, konfettiView.getWidth() + 700f, -50f, -50f)
+                .streamFor(300, 2000L);
 
         final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.victory);
         mediaPlayer.start();
@@ -86,9 +89,15 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if(v == prøveigen){
             this.finish();
-            Intent spil = new Intent(this, SpilActivity.class);
-            startActivity(spil);
-            finish();
+            if(multiplayer){
+                Intent spil = new Intent(this, ListActivity.class);
+                startActivity(spil);
+                finish();
+            }else {
+                Intent spil = new Intent(this, LoadingActivity.class);
+                startActivity(spil);
+                finish();
+            }
         }
         if(v == home){
             this.finish();
