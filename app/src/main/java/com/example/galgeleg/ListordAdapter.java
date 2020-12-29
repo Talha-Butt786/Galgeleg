@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,19 +28,20 @@ public class ListordAdapter extends RecyclerView.Adapter<ListordAdapter.ViewsHol
     @NonNull
     @Override
     public ViewsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewsHolder(LayoutInflater.from(context).inflate(R.layout.listofword,parent,false));
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.listofword,parent,false);
+        return new ViewsHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewsHolder holder, final int position) {
-        // Retrieve the data for that position
-        String word = words.get(position);
-        // Add the data to the view
+    public void onBindViewHolder(@NonNull final ViewsHolder holder, final int position) {
+        holder.imageView.setImageResource(R.drawable.forkert7);
+        String word = words.get(holder.getAdapterPosition());
         holder.ord.setText(word);
         holder.ord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String word = words.get(position);
+                String word = words.get(holder.getAdapterPosition());
                 Toast.makeText(context,word,Toast.LENGTH_SHORT).show();
                 Intent spil = new Intent(context,SpilActivity.class);
                 spil.putExtra("given_word",word);
@@ -48,6 +50,7 @@ public class ListordAdapter extends RecyclerView.Adapter<ListordAdapter.ViewsHol
 
             }
         });
+
 
     }
 
@@ -59,9 +62,11 @@ public class ListordAdapter extends RecyclerView.Adapter<ListordAdapter.ViewsHol
     public class ViewsHolder extends RecyclerView.ViewHolder {
 
         TextView ord;
+        ImageView imageView;
         public ViewsHolder(@NonNull View itemView) {
             super(itemView);
             ord =itemView.findViewById(R.id.ord_view);
+            imageView = itemView.findViewById(R.id.imageView5);
         }
 
     }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -24,7 +25,6 @@ public class ListActivity extends AppCompatActivity {
     Executor backThread;
     Handler uiThread;
     GalgeSpilContext spilContext;
-    ArrayList<String> words;
 
     public ListActivity(){
         spilContext = new GalgeSpilContext();
@@ -35,9 +35,12 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        wordlist_view = findViewById(R.id.recycle_view);
         startdialogbox();
         fetchData();
     }
+
 
     public void fetchData (){
         backThread.execute(new Runnable() {
@@ -45,14 +48,16 @@ public class ListActivity extends AppCompatActivity {
             public void run() {
                 try {
                    final ArrayList<String> words_online = spilContext.hentOrdFraRegneark("2");
+                    for (String str:words_online) {
+                        System.out.println(str);
+                    }
                     uiThread.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             ListordAdapter liste =new ListordAdapter(getApplicationContext(),words_online);
-                            wordlist_view = findViewById(R.id.recycle_view);
                             wordlist_view.setHasFixedSize(true);
-                            wordlist_view.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                             wordlist_view.setAdapter(liste);
+                            wordlist_view.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                             alertDialog.dismiss();
                         }
                     },2000);
@@ -70,6 +75,7 @@ public class ListActivity extends AppCompatActivity {
         dialogbox.setCancelable(false);
         alertDialog = dialogbox.create();
         alertDialog.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.select_button);
     }
 
 }

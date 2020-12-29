@@ -144,6 +144,9 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             case 6:
                 wrongimage.setImageResource(R.drawable.forkert6);
                 break;
+            case 7:
+                wrongimage.setImageResource(R.drawable.forkert7);
+                break;
         }
 
     }
