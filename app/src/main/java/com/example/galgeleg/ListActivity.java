@@ -35,7 +35,9 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
+        try {
+            this.getSupportActionBar().hide();
+        }catch (NullPointerException e){}
         wordlist_view = findViewById(R.id.recycle_view);
         startdialogbox();
         fetchData();

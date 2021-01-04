@@ -10,8 +10,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -21,9 +24,10 @@ import nl.dionsegijn.konfetti.models.Size;
 public class WinActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView winLose;
-    Button prøveigen, home;
+    ImageButton prøveigen, home;
     TextView highscore,newhighscore,antalforsøge;
     FrameLayout frameLayout;
+    LottieAnimationView lottieAnimationView;
     boolean multiplayer = false;
 
 
@@ -37,9 +41,9 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
         try {
             this.getSupportActionBar().hide();
         }catch (NullPointerException e){}
-
         multiplayer = getIntent().getBooleanExtra("multiplayer",false);
         frameLayout = findViewById(R.id.lottie_Frame);
+        lottieAnimationView = findViewById(R.id.lottie_loadig);
        // CommonConfetti.rainingConfetti(konfettiView,new int[]{Color.GREEN,Color.YELLOW,Color.BLUE}).infinite();
         final KonfettiView konfettiView = findViewById(R.id.viewKonfetti);
         konfettiView.build()

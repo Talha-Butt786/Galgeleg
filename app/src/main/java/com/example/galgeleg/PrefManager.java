@@ -34,7 +34,7 @@ public class PrefManager {
 
     public ScoreList getScoresfromPref (Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String jsonobj = preferences.getString(LIST_SCORE,"{\"scores\":[{\"date\":\"nodate\",\"points\":0}]}");
+        String jsonobj = preferences.getString(LIST_SCORE,"{\"scores\":[{\"name\":\"noname\",\"word\":\"noword\",\"date\":\"nodate\",\"points\":0}]}");
 
          Gson gson = new Gson();
          return gson.fromJson(jsonobj, ScoreList.class);

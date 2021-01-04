@@ -2,19 +2,30 @@ package com.example.galgeleg;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.example.galgeleg.logic.Score;
 import com.example.galgeleg.logic.ScoreList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ScoreListActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ListView listView;
+    RecyclerView recyclerView;
     Button home,clear;
 
     @Override
@@ -54,8 +65,18 @@ public class ScoreListActivity extends AppCompatActivity implements View.OnClick
     public void getAllScores(){
         PrefManager prefManager = PrefManager.getInstance();
         ScoreList score = prefManager.getScoresfromPref(this);
-        listView = findViewById(R.id.listview);
+        ScoreList scoreList = new ScoreList();
+        scoreList.addscore(new Score("Talha","udkast","23-01-2020",1234));
+        recyclerView = findViewById(R.id.scorelist_id);
+        Collections.sort(score.getScoreslist(), new Comparator<Score>() {
+            @Override
+            public int compare(Score o1, Score o2) {
+                return Integer.valueOf(o2.getPoints()).compareTo(o1.getPoints());
+            }
+        });
         ScoreAdapter scoreAdapter = new ScoreAdapter(this,score);
-        listView.setAdapter(scoreAdapter);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(scoreAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 }

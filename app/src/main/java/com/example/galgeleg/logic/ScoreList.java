@@ -20,7 +20,7 @@ public class ScoreList {
     }
 
     public void addscore(Score score) {
-        scores.add(score);
+        this.scores.add(score);
     }
 
 }

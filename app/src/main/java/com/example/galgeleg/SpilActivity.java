@@ -1,18 +1,25 @@
 package com.example.galgeleg;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,6 +49,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     Chronometer chronometer;
     long time1,time2;
     ScoreList scorelist;
+    String name;
+    AlertDialog alertDialog;
     boolean multiplayer = false;
     public SpilActivity(){
         galgelegLogik = new GalgeSpilContext();
@@ -67,11 +76,10 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         try {
             this.getSupportActionBar().hide();
         }catch (NullPointerException e){}
-
-
+        startdialogbox();
         String highscore = Integer.toString(PrefManager.getInstance().getHighestScore(getApplicationContext()));
         highestscore.setText(highscore);
-        //hentOnlineOrd();  //initialisere spillet samtidlig hentes ord online
+        //hentOnlineOrd();  //initialisere spillet samtidlig hentes ord online  todo remove this
         galgelegLogik.setMuligeOrd(getIntent().getStringArrayListExtra("ord_list"));
         if(getIntent().getStringExtra("given_word")!=null){
             multiplayer = true;
@@ -79,15 +87,38 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         }
         galgelegLogik.startSpil();
         skjultOrd.setText(galgelegLogik.getSynligtOrd());
-        startWatch();
         addButtons();
         //startWatch();
         galgelegLogik.logStatus();
     }
+    public void startdialogbox(){
+            AlertDialog.Builder dialogbox = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();  //todo remove this
+            dialogbox.setTitle("Your Name");
+            dialogbox.setMessage("Please type your name");
+            final EditText editText = new EditText(this);
+            dialogbox.setView(editText);
+            dialogbox.setCancelable(false);
+            dialogbox.setPositiveButton("submit", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    name = editText.getText().toString();
+                    startWatch();
+                }
+            });
+            alertDialog = dialogbox.create();
+            alertDialog.show();
+            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.select_button);
+    }
+
 
     public void addButtons(){
         int alphaAscii = 97;  //tilføjes bogstaver med ascii.
         buttonList = new ArrayList<>();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        int widtsize = display.getWidth();
+        int heightsize=display.getHeight();
         for (int i = 0; i < 30; i++) {
             Button button = new Button(this);
             if(i<26){
@@ -95,12 +126,33 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             }else {
                 button.setText(danskOrd.get(alphaAscii)); // hentes danske ord
             }
-            button.setId(alphaAscii);
-            LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,2);
-            button.setLayoutParams(LayoutParams);
+
+            if(i>=11&&i<=20){
+                button.setTextSize(14);
+                button.setId(alphaAscii);
+                LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,2);
+                LayoutParams.setMargins(5,10,5,10);
+                button.setLayoutParams(LayoutParams);
+            }
+            else if(i>=21&&i<=29){
+                button.setTextSize(14);
+                button.setId(alphaAscii);
+                LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,2);
+                LayoutParams.setMargins(5,10,5,10);
+                button.setLayoutParams(LayoutParams);
+
+            }else {
+                button.setTextSize(14);
+                button.setId(alphaAscii);
+                LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,2);
+                LayoutParams.setMargins(5,10,5,10);
+                button.setLayoutParams(LayoutParams);
+            }
+
             button.setOnClickListener(this);
             //https://stackoverflow.com/questions/13842447/android-set-button-background-programmatically
-            button.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+            //button.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
+            button.setBackground(ContextCompat.getDrawable(this,R.drawable.button_home));
             button.setTextColor(Color.WHITE);
             buttonList.add(button);
             alphaAscii++;
@@ -108,16 +160,27 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         buttonList.get(29).setVisibility(View.INVISIBLE);   //ikke skal vises tom button.
         LinearLayout linearLayout = findViewById(R.id.tast);
         int buttonIndex = 0;
-        for (int i = 0; i < 5; i++) {
+        int nrbuttons = 11;
+        for (int i = 0; i < 3; i++) {
             LinearLayout row = new LinearLayout(this);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
 
             row.setLayoutParams(layoutParams);
-            for (int j = 0; j < 6; j++) {
-                row.addView(buttonList.get(buttonIndex));
+
+
+            for (int j = 0; j < nrbuttons; j++) {
+                if(buttonList.size()==buttonIndex+1){
+                    break;
+                }
+                Button button = buttonList.get(buttonIndex);
+                //button.getLayoutParams().width=50;
+                row.addView(button);
                 buttonIndex++;
+                if(nrbuttons-j == 1){
+                    nrbuttons--;
+                }
             }
             linearLayout.addView(row);
         }
@@ -151,7 +214,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void hentOnlineOrd (){
+    public void hentOnlineOrd (){   //todo remove this
         backThread.execute(new Runnable() {
             @Override
             public void run() {
@@ -245,7 +308,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                     int points = l.intValue();
                     DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                     String date = df.format(new Date());
-                   Score score = new Score(date,points);
+                   Score score = new Score(name,galgelegLogik.getOrdet(),date,points);
                    scorelist = PrefManager.getInstance().getScoresfromPref(getApplicationContext());
                    if(scorelist.getScoreslist().get(0).getPoints()==0){
                        scorelist=new ScoreList();
@@ -266,6 +329,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                     Intent End = new Intent(this, LoseActivity.class);
                     String rigtigOrd = galgelegLogik.getOrdet();
                     End.putExtra("rigtig ord",rigtigOrd);
+                    End.putExtra("multiplayer2",multiplayer);
                     startActivity(End);
                     finish();
                 }
