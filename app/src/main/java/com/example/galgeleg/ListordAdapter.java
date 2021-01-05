@@ -46,6 +46,7 @@ public class ListordAdapter extends RecyclerView.Adapter<ListordAdapter.ViewsHol
                 spil.putExtra("given_word",word);
                 spil.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(spil);
+                ((ListActivity)context).finish();
 
             }
         });

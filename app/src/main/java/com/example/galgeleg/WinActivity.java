@@ -23,7 +23,7 @@ import nl.dionsegijn.konfetti.models.Size;
 
 public class WinActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView winLose;
+    ImageView scorelist;
     ImageButton prøveigen, home;
     TextView highscore,newhighscore,antalforsøge;
     FrameLayout frameLayout;
@@ -59,6 +59,8 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
 
         final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.victory);
         mediaPlayer.start();
+        scorelist = findViewById(R.id.scorelist_image);
+        scorelist.setOnClickListener(this);
         highscore = findViewById(R.id.highscoreid1);
         newhighscore = findViewById(R.id.yournewid);
         prøveigen = findViewById(R.id.prøvid);
@@ -102,6 +104,12 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
                 startActivity(spil);
                 finish();
             }
+        }
+        if(v == scorelist){
+            this.finish();
+            Intent list = new Intent(this,ScoreListActivity.class);
+            startActivity(list);
+            finish();
         }
         if(v == home){
             this.finish();

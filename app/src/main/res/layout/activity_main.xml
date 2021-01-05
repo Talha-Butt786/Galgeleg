@@ -49,39 +49,43 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView11"
         app:srcCompat="@drawable/hangman" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/single_id"
         android:layout_width="180dp"
         android:layout_height="80dp"
+        android:background="@drawable/mainbutton_background"
         app:layout_constraintBottom_toTopOf="@+id/multi_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6"
-        app:srcCompat="@drawable/mainbutton_background" />
+         />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/multi_id"
         android:layout_width="180dp"
         android:layout_height="80dp"
+        android:background="@drawable/mainbutton_background"
         app:layout_constraintBottom_toTopOf="@+id/hjælp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/single_id"
-        app:srcCompat="@drawable/mainbutton_background" />
+         />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/hjælp"
         android:layout_width="180dp"
         android:layout_height="80dp"
         android:layout_marginBottom="32dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/mainbutton_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/multi_id"
-        app:srcCompat="@drawable/mainbutton_background" />
+         />
 
     <TextView
         android:id="@+id/textView7"
@@ -117,7 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sancreek"
-        android:text="Help"
+        android:text="Rules"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="24sp"
         android:textStyle="bold"

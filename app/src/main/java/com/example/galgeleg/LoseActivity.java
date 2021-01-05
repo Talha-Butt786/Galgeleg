@@ -7,12 +7,13 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LoseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ImageView gohome,prøveigen;
+    ImageButton gohome,prøveigen;
     TextView correctword, bestscore;
     boolean multiplayer = false;
     @Override

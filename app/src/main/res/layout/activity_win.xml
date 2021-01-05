@@ -1,12 +1,11 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:padding="5dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@drawable/win_lose_background"
-tools:context=".WinActivity" >
+    tools:context=".WinActivity">
+
 
     <ImageView
         android:id="@+id/imageView10"
@@ -19,47 +18,45 @@ tools:context=".WinActivity" >
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/background_win_lose" />
 
-    <ImageView
-        android:id="@+id/imageView9"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView10"
-        app:layout_constraintEnd_toEndOf="@+id/imageView10"
-        app:layout_constraintStart_toStartOf="@+id/imageView10"
-        app:srcCompat="@drawable/tryagain_background" />
-
-    <ImageButton
-        android:id="@+id/prøvid"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView10"
-        app:layout_constraintEnd_toStartOf="@id/homeid"
-        app:layout_constraintStart_toStartOf="@+id/imageView9"
-        app:layout_constraintTop_toTopOf="@+id/imageView9"
-        app:srcCompat="@drawable/icon_retry" />
 
     <ImageButton
         android:id="@+id/homeid"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginRight="100dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="?attr/selectableItemBackground"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/prøvid"
-        app:layout_constraintEnd_toEndOf="@+id/imageView9"
-        app:layout_constraintStart_toEndOf="@+id/prøvid"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/prøvid"
-        app:srcCompat="@drawable/icon_home" />
+        app:layout_constraintStart_toEndOf="@id/prøvid"
+        app:srcCompat="@drawable/home_button" />
+
+    <ImageView
+        android:id="@+id/scorelist_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/prøvid"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/prøvid"
+        app:srcCompat="@drawable/scorelist_button" />
+
+    <ImageButton
+        android:id="@+id/prøvid"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="32dp"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/homeid"
+        app:layout_constraintStart_toEndOf="@id/scorelist_image"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        app:srcCompat="@drawable/play_button" />
 
     <FrameLayout
         android:id="@+id/konfetti_frame"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="?selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +66,8 @@ tools:context=".WinActivity" >
             android:id="@+id/viewKonfetti"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+
 
     </FrameLayout>
 
