@@ -65,8 +65,6 @@ public class ScoreListActivity extends AppCompatActivity implements View.OnClick
     public void getAllScores(){
         PrefManager prefManager = PrefManager.getInstance();
         ScoreList score = prefManager.getScoresfromPref(this);
-        ScoreList scoreList = new ScoreList();
-        scoreList.addscore(new Score("Talha","udkast","23-01-2020",1234));
         recyclerView = findViewById(R.id.scorelist_id);
         Collections.sort(score.getScoreslist(), new Comparator<Score>() {
             @Override
@@ -74,9 +72,13 @@ public class ScoreListActivity extends AppCompatActivity implements View.OnClick
                 return Integer.valueOf(o2.getPoints()).compareTo(o1.getPoints());
             }
         });
-        ScoreAdapter scoreAdapter = new ScoreAdapter(this,score);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(scoreAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        if(!score.getScoreslist().get(0).getName().equals("noname")) {
+            ScoreAdapter scoreAdapter = new ScoreAdapter(this, score);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setAdapter(scoreAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        }else{
+            clear.setVisibility(View.INVISIBLE);
+        }
     }
 }

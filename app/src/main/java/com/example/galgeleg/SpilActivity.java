@@ -38,7 +38,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class SpilActivity extends AppCompatActivity implements View.OnClickListener {
-    Button home,help;
+    Button home,help, okbutton;
     TextView skjultOrd, highestscore;
     GalgeSpilContext galgelegLogik;
     ImageView wrongimage;
@@ -97,17 +97,31 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             dialogbox.setTitle("Your Name");
             dialogbox.setMessage("Please type your name");
             final EditText editText = new EditText(this);
+            editText.setTextColor(Color.WHITE);
             dialogbox.setView(editText);
             dialogbox.setCancelable(false);
-            dialogbox.setPositiveButton("submit", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    name = editText.getText().toString();
-                    startWatch();
-                }
-            });
+                dialogbox.setPositiveButton("submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
             alertDialog = dialogbox.create();
             alertDialog.show();
+            Button okbutton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            okbutton.setTextColor(Color.WHITE);
+            okbutton.setOnClickListener(this);
+            okbutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(editText.getText().length()<3){
+                        Toast.makeText(getApplicationContext(),"give atleast 3 letter",Toast.LENGTH_SHORT).show();
+                    }else {
+                        name = editText.getText().toString();
+                        startWatch();
+                        alertDialog.dismiss();
+                    }
+                }
+            });
             alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.select_button);
     }
 
@@ -115,10 +129,6 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     public void addButtons(){
         int alphaAscii = 97;  //tilføjes bogstaver med ascii.
         buttonList = new ArrayList<>();
-
-        Display display = getWindowManager().getDefaultDisplay();
-        int widtsize = display.getWidth();
-        int heightsize=display.getHeight();
         for (int i = 0; i < 30; i++) {
             Button button = new Button(this);
             if(i<26){
@@ -152,7 +162,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             button.setOnClickListener(this);
             //https://stackoverflow.com/questions/13842447/android-set-button-background-programmatically
             //button.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
-            button.setBackground(ContextCompat.getDrawable(this,R.drawable.button_home));
+                button.setBackground(ContextCompat.getDrawable(this,R.drawable.button_home));
             button.setTextColor(Color.WHITE);
             buttonList.add(button);
             alphaAscii++;
@@ -214,37 +224,6 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void hentOnlineOrd (){   //todo remove this
-        backThread.execute(new Runnable() {
-            @Override
-            public void run() {
-                uiThread.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        skjultOrd.setText("Henter Ord fra nettet...");
-                    }
-                });
-
-                try {
-                   // galgelegLogik.hentOrdFraRegneark("2",galgelegLogik.getMuligeOrd());
-                    uiThread.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            galgelegLogik.startSpil();
-                            skjultOrd.setText(galgelegLogik.getSynligtOrd());
-                            startWatch();
-
-                        }
-                    });
-                }catch (Exception e){
-                    e.printStackTrace();
-                    skjultOrd.setText("kunne ikke hente data prøve igen!");
-                }
-            }
-        });
-    }
-
     public void startWatch(){
         time1=SystemClock.elapsedRealtime();
         chronometer.setBase(time1);
@@ -271,6 +250,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         if(v == home){
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
+            finish();
         } else {
             int id = v.getId();
             if (id >= 97 && id <= 122) {
@@ -298,7 +278,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
                     changePicsAccordingly(wrongs);
                 }
             }
-            //https://stackoverflow.com/questions/13842447/android-set-button-background-programmatically
+            //https://stackoverflow.com/questions/13842447/android-set-button-background-programmaticall
             v.getBackground().setColorFilter(getResources().getColor(R.color.colorPrimaryLight), PorterDuff.Mode.MULTIPLY);
             v.setClickable(false);
             if(galgelegLogik.erSpilletSlut()){
@@ -336,7 +316,7 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         if(v==help){
-            Toast.makeText(this,"Not implemented",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Click on any Alphabet "+ name +"!",Toast.LENGTH_SHORT).show();
         }
     }
 }

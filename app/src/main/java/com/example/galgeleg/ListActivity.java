@@ -77,7 +77,6 @@ public class ListActivity extends AppCompatActivity {
         dialogbox.setCancelable(false);
         alertDialog = dialogbox.create();
         alertDialog.show();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.select_button);
     }
 
 }

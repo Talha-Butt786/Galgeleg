@@ -1,17 +1,18 @@
 package com.example.galgeleg;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageButton startbutton, scoreliste,help;
+    ImageButton startbutton, scoreliste,rules;
     TextView getWord;
 
     @Override
@@ -29,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startbutton.setOnClickListener(this);
         scoreliste = findViewById(R.id.multi_id);
         scoreliste.setOnClickListener(this);
-        help = findViewById(R.id.hjælp);
-        help.setOnClickListener(this);
+        rules = findViewById(R.id.rules);
+        rules.setOnClickListener(this);
     }
 
     @Override
@@ -43,8 +44,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent list = new Intent(this, ScoreListActivity.class);
             startActivity(list);
         }
-        if(v==help){
-            Toast.makeText(this,"not implemented",Toast.LENGTH_SHORT).show();
+        if(v==rules){
+            AlertDialog.Builder dialogbox = new AlertDialog.Builder(this);
+            dialogbox.setMessage("* Just click on any alphabet to guess\n* Once clicked, you can't click again\n* Timer is set on once the game is ready" +
+                    "\n* Longer the word to guess bigger the bonus you can get\n* Total points are given by evaluating total time points + bonus points" +
+                    "\n* One can maximum get 3000 points");
+            dialogbox.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            dialogbox.show();
         }
 
     }

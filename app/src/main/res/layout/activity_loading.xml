@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
+    android:background="@drawable/win_lose_background"
     android:orientation="vertical">
 
     <com.airbnb.lottie.LottieAnimationView
@@ -17,24 +18,27 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fetching Data"
-        android:gravity="center"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:textColor="#212121"
+        android:fontFamily="@font/sancreek"
+        android:gravity="center"
+        android:text="Fetching Data"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please bear a little wait, the game is starting!"
-        android:gravity="center"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="40dp"
-        android:textColor="#212121"
-        android:textSize="18sp"
-        android:textStyle="italic"
-        />
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:fontFamily="@font/sancreek"
+        android:gravity="center"
+        android:text="Please bear a little wait, the game is starting!"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="italic" />
 
 </LinearLayout>
