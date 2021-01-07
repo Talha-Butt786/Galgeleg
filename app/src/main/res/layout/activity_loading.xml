@@ -7,38 +7,6 @@
     android:background="@drawable/win_lose_background"
     android:orientation="vertical">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_loadig"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        app:lottie_rawRes="@raw/download"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:fontFamily="@font/sancreek"
-        android:gravity="center"
-        android:text="Fetching Data"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="40dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:fontFamily="@font/sancreek"
-        android:gravity="center"
-        android:text="Please bear a little wait, the game is starting!"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="italic" />
 
 </LinearLayout>

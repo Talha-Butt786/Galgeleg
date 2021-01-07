@@ -12,17 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ListActivity"
+            android:screenOrientation="portrait"
             android:label="Click on a word to select"
             ></activity>
-        <activity android:name=".LoadingActivity" />
-        <activity android:name=".LoseActivity" />
-        <activity android:name=".ScoreListActivity" />
-        <activity android:name=".SpilActivity" />
-        <activity android:name=".SelectActivity" />
+        <activity android:name=".LoadingActivity" android:screenOrientation="portrait" />
+        <activity android:name=".LoseActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ScoreListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SpilActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SelectActivity" android:screenOrientation="portrait"/>
         <activity
             android:name=".WinActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity" android:screenOrientation="portrait"/>
         <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
