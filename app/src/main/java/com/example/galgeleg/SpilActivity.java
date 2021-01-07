@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -79,7 +80,6 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         startdialogbox();
         String highscore = Integer.toString(PrefManager.getInstance().getHighestScore(getApplicationContext()));
         highestscore.setText(highscore);
-        //hentOnlineOrd();  //initialisere spillet samtidlig hentes ord online  todo remove this
         galgelegLogik.setMuligeOrd(getIntent().getStringArrayListExtra("ord_list"));
         if(getIntent().getStringExtra("given_word")!=null){
             multiplayer = true;
@@ -88,12 +88,10 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         galgelegLogik.startSpil();
         skjultOrd.setText(galgelegLogik.getSynligtOrd());
         addButtons();
-        //startWatch();
         galgelegLogik.logStatus();
     }
     public void startdialogbox(){
             AlertDialog.Builder dialogbox = new AlertDialog.Builder(this);
-            LayoutInflater inflater = this.getLayoutInflater();  //todo remove this
             dialogbox.setTitle("Your Name");
             dialogbox.setMessage("Please type your name");
             final EditText editText = new EditText(this);
@@ -136,30 +134,12 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
             }else {
                 button.setText(danskOrd.get(alphaAscii)); // hentes danske ord
             }
-
-            if(i>=11&&i<=20){
                 button.setTextSize(14);
                 button.setId(alphaAscii);
                 LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,2);
                 LayoutParams.setMargins(5,10,5,10);
                 button.setLayoutParams(LayoutParams);
-            }
-            else if(i>=21&&i<=29){
-                button.setTextSize(14);
-                button.setId(alphaAscii);
-                LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,2);
-                LayoutParams.setMargins(5,10,5,10);
-                button.setLayoutParams(LayoutParams);
-
-            }else {
-                button.setTextSize(14);
-                button.setId(alphaAscii);
-                LinearLayout.LayoutParams LayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT,2);
-                LayoutParams.setMargins(5,10,5,10);
-                button.setLayoutParams(LayoutParams);
-            }
-
-            button.setOnClickListener(this);
+                button.setOnClickListener(this);
             //https://stackoverflow.com/questions/13842447/android-set-button-background-programmatically
             //button.getBackground().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
                 button.setBackground(ContextCompat.getDrawable(this,R.drawable.button_home));
@@ -242,8 +222,12 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
+    @Override
+    public void onBackPressed() {
+        Intent select_Act = new Intent(this,SelectActivity.class);
+        this.finish();
+        startActivity(select_Act);
+    }
 
     @Override
     public void onClick(View v) {

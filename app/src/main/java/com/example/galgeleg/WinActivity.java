@@ -90,6 +90,12 @@ public class WinActivity extends AppCompatActivity implements View.OnClickListen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent select = new Intent(this,SelectActivity.class);
+        this.finish();
+        startActivity(select);
+    }
 
     @Override
     public void onClick(View v) {

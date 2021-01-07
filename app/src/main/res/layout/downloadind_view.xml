@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/sancreek"
         android:gravity="center"
-        android:text="Fetching the Data...\nThe Game is about to start"
+        android:text="Fetching the Data...\nThe Game is getting List of words"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"

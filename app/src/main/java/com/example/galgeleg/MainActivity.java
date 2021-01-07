@@ -35,14 +35,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public void onBackPressed() {
+        this.finish();
+        finishAffinity();
+    }
+
+
+    @Override
     public void onClick(View v) {
         if(v == startbutton){
             Intent select = new Intent(this, SelectActivity.class);
             startActivity(select);
+            finish();
         }
         if(v == scoreliste){
             Intent list = new Intent(this, ScoreListActivity.class);
             startActivity(list);
+            finish();
         }
         if(v==rules){
             AlertDialog.Builder dialogbox = new AlertDialog.Builder(this);

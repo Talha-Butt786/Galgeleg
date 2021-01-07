@@ -41,12 +41,11 @@ public class ListordAdapter extends RecyclerView.Adapter<ListordAdapter.ViewsHol
             @Override
             public void onClick(View v) {
                 String word = words.get(holder.getAdapterPosition());
-                Toast.makeText(context,word,Toast.LENGTH_SHORT).show();
                 Intent spil = new Intent(context,SpilActivity.class);
                 spil.putExtra("given_word",word);
                 spil.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(spil);
-                 //todo fix this or remove
+
             }
         });
 

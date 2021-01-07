@@ -28,14 +28,24 @@ public class SelectActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent select = new Intent(this,MainActivity.class);
+        this.finish();
+        startActivity(select);
+    }
+
+    @Override
     public void onClick(View v) {
         if(v==single){
             Intent spil = new Intent(this, LoadingActivity.class);
             startActivity(spil);
+            finish();
         }
         if(v==multiplayer){
             Intent list = new Intent(this,ListActivity.class);
             startActivity(list);
+            finish();
         }
     }
 }

@@ -43,6 +43,12 @@ public class ListActivity extends AppCompatActivity {
         fetchData();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent select = new Intent(this,SelectActivity.class);
+        this.finish();
+        startActivity(select);
+    }
 
     public void fetchData (){
         backThread.execute(new Runnable() {

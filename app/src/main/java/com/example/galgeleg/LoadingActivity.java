@@ -19,6 +19,7 @@ public class LoadingActivity extends AppCompatActivity {
     GalgeSpilContext spilContext;
     Executor backThread;
     Handler uiThread;
+    Runnable runnable1,runnable2;
     LottieAnimationView lottieAnimationView;
     public LoadingActivity(){
         spilContext = new GalgeSpilContext();
@@ -33,20 +34,33 @@ public class LoadingActivity extends AppCompatActivity {
         lottieAnimationView = findViewById(R.id.lottie_loadig);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        Intent select = new Intent(this,SelectActivity.class);
+        this.finish();
+        //clear also background running threads
+        uiThread.removeCallbacks(runnable1);
+        uiThread.removeCallbacks(runnable2);
+        startActivity(select);
+    }
+
+
     @Override
     protected void onStart() {
         super.onStart();
-        backThread.execute(new Runnable() {
+        backThread.execute(runnable1=new Runnable() {
             @Override
             public void run() {
                 try {
                     final ArrayList<String> ord = spilContext.hentOrdFraRegneark("2");
-                    uiThread.postDelayed(new Runnable() {
+                    uiThread.postDelayed(runnable2 = new Runnable() {
                         @Override
                         public void run() {
                             Intent intent = new Intent(getBaseContext(), SpilActivity.class);
                             intent.putStringArrayListExtra("ord_list",ord);
                             startActivity(intent);
+                            finish();
                         }
                     },2000);
                 }catch (Exception e){

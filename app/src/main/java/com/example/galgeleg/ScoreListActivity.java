@@ -41,6 +41,14 @@ public class ScoreListActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
+    public void onBackPressed() {
+        Intent select = new Intent(this,MainActivity.class);
+        this.finish();
+        startActivity(select);
+    }
+
+
+    @Override
     public void onClick(View v) {
         if (v == home) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -54,13 +62,15 @@ public class ScoreListActivity extends AppCompatActivity implements View.OnClick
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             PrefManager.getInstance().clearData(getApplicationContext());
-                            getAllScores();
+                            recyclerView.setVisibility(View.INVISIBLE);
+                            clear.setVisibility(View.INVISIBLE);
                         }
                     })
                     .setNegativeButton("NO",null)
                     .show();
         }
     }
+
 
     public void getAllScores(){
         PrefManager prefManager = PrefManager.getInstance();
@@ -72,7 +82,7 @@ public class ScoreListActivity extends AppCompatActivity implements View.OnClick
                 return Integer.valueOf(o2.getPoints()).compareTo(o1.getPoints());
             }
         });
-        if(!score.getScoreslist().get(0).getName().equals("noname")) {
+        if(score.getScoreslist().get(0).getPoints()!=0) {
             ScoreAdapter scoreAdapter = new ScoreAdapter(this, score);
             recyclerView.setHasFixedSize(true);
             recyclerView.setAdapter(scoreAdapter);
