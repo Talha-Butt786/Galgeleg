@@ -170,8 +170,8 @@ public class SpilActivity extends AppCompatActivity implements View.OnClickListe
         buttonList.get(29).setVisibility(View.INVISIBLE);   //ikke skal vises tom button.
         LinearLayout linearLayout = findViewById(R.id.tast);
         int buttonIndex = 0;
-        int nrbuttons = 11;
-        for (int i = 0; i < 3; i++) {
+        int nrbuttons = 9;
+        for (int i = 0; i < 4; i++) {
             LinearLayout row = new LinearLayout(this);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
